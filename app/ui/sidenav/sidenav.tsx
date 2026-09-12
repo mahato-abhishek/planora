@@ -32,8 +32,8 @@ export default function SideNav({
   name,
   email,
 }: {
-  name: string;
-  email: string;
+  name: string | undefined;
+  email: string | undefined;
 }) {
   const pathname = usePathname();
   console.log(pathname);

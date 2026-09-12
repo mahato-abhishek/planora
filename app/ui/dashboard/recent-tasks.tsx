@@ -1,21 +1,19 @@
-"use client";
+"use server";
+import { getTaskData } from "@/lib/actions/actions";
 import { geistSans } from "@/lib/fonts";
-import { TaskType } from "@/lib/types/types";
+
 import Link from "next/link";
-import { FC, useState } from "react";
+
 import {
   FcHighPriority,
   FcLowPriority,
   FcMediumPriority,
 } from "react-icons/fc";
 
-type Props = {
-  taskData: TaskType[];
-};
+export const RecentTasks = async () => {
+  const taskData = await getTaskData();
 
-export const RecentTasks: FC<Props> = ({ taskData }) => {
-  const [tasks, setTasks] = useState<TaskType[]>(taskData);
-  tasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  taskData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   return (
     <div
       className={`${geistSans.className} col-span-2 border rounded-xl dark:border-mist-800 border-mist-300 p-2`}
@@ -30,7 +28,7 @@ export const RecentTasks: FC<Props> = ({ taskData }) => {
         </Link>
       </div>
       <div className="w-full p-3 space-y-3 ">
-        {tasks.map((task) => (
+        {taskData.map((task) => (
           <div key={task.id} className="flex items-center justify-between">
             <div>
               <p className="font-medium ">{task.task_name}</p>

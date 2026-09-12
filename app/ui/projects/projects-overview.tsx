@@ -11,17 +11,19 @@ import { AllProjects } from "@/app/ui/projects/all-projects";
 const catagories = ["All Projects", "Low", "Medium", "High"];
 
 interface Props {
-  projectData: ProjectType[];
-  taskData: TaskType[];
+  projectData: ProjectType[] | undefined;
+  taskData: TaskType[] | undefined;
 }
 
 const ProjectView: FC<Props> = ({ projectData, taskData }) => {
   const [projectOpen, setProjectOpen] = useState(false);
   const [active, setActive] = useState("All Projects");
-  const [projects, setProjects] = useState<ProjectType[]>(projectData);
+  const [projects, setProjects] = useState<ProjectType[] | undefined>(
+    projectData,
+  );
 
   const deleteProjectItem = (id: number) => {
-    setProjects((prev) => prev.filter((todo) => todo.id !== id));
+    setProjects((prev) => prev?.filter((todo) => todo.id !== id));
     deleteProject(id);
   };
 

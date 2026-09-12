@@ -12,8 +12,8 @@ export const NewProject = ({
   projects,
 }: {
   closeTask: React.Dispatch<React.SetStateAction<boolean>>;
-  addProject: React.Dispatch<React.SetStateAction<ProjectType[]>>;
-  projects: ProjectType[];
+  addProject: React.Dispatch<React.SetStateAction<ProjectType[] | undefined>>;
+  projects: ProjectType[] | undefined;
 }) => {
   const searchboxRef = useRef<HTMLDivElement>(null!);
   useClickOutside(searchboxRef, () => closeTask(false));
@@ -32,12 +32,15 @@ export const NewProject = ({
       description: formData.get("description"),
       date: formData.get("date"),
     };
-    const projectNames = projects.map((project) => project.project_name);
-    for (let name of projectNames) {
-      if (name == data.projectName) {
-        setError("Project name already exists. Try another name");
-        return;
+    const projectNames = projects?.map((project) => project.project_name);
+    if (projectNames) {
+      for (let name of projectNames) {
+        if (name == data.projectName) {
+          setError("Project name already exists. Try another name");
+          return;
+        }
       }
+      return;
     }
 
     try {

@@ -5,7 +5,8 @@ import { spaceMono } from "@/lib/fonts";
 import { FcTodoList } from "react-icons/fc";
 import { RiTodoLine } from "react-icons/ri";
 import { ProjectType, TaskType } from "@/lib/types/types";
-import { FC } from "react";
+import { getProjectData } from "@/lib/actions/actions";
+import { getTaskData } from "@/lib/actions/actions";
 type Props = {
   title: string;
   count: number;
@@ -16,7 +17,9 @@ type props = {
   taskData: TaskType[];
 };
 
-export const DashOverview: FC<props> = ({ projectData, taskData }) => {
+export const DashOverview = async () => {
+  const projectData: ProjectType[] = await getProjectData();
+  const taskData: TaskType[] = await getTaskData();
   const viewList = [
     {
       title: "TOTAL PROJECTS",

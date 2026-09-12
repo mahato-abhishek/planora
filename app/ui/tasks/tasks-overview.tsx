@@ -90,7 +90,9 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
         </div>
         {tasks
           ?.filter(
-            (task) => active === "All Tasks" || task.task_status === active,
+            (task) =>
+              (active === "All Tasks" && task.task_status != "Done") ||
+              task.task_status === active,
           )
           .map((task) => (
             <AllTasks

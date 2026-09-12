@@ -67,7 +67,7 @@ export const AllTasks = ({
         {date}
       </p>
 
-      <div className="text-center flex items-center justify-center h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 ">
+      <div className="text-center flex justify-center h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 ">
         {" "}
         <button
           onClick={() => setActiveStatus((prev) => !prev)}

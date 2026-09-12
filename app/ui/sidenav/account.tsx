@@ -19,7 +19,13 @@ export const Profile = (prop: Props) => {
     </>
   );
 };
-export const Account = ({ name, email }: { name: string; email: string }) => {
+export const Account = ({
+  name,
+  email,
+}: {
+  name: string | undefined;
+  email: string | undefined;
+}) => {
   const [profileOpen, setProfileOpen] = useState(false);
   return (
     <>
@@ -30,7 +36,7 @@ export const Account = ({ name, email }: { name: string; email: string }) => {
         <Profile size={48} />
         <div>
           <p className=" font-bold">{name}</p>
-          <p className="text-xs ">{email.slice(0, 18) + "..."}</p>
+          <p className="text-xs ">{email?.slice(0, 18) + "..."}</p>
         </div>
       </div>
       <div className="bg-mist-200 dark:bg-mist-900 rounded-lg mt-2">

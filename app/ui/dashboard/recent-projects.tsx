@@ -1,19 +1,15 @@
-"use client";
-import { ProjectType } from "@/lib/types/types";
-import { FC, useState } from "react";
+"use server";
 import Link from "next/link";
 import { geistSans } from "@/lib/fonts";
-import { TaskType } from "@/lib/types/types";
+
 import { Progress } from "../projects/progress";
+import { getProjectData, getTaskData } from "@/lib/actions/actions";
 
-type Props = {
-  projectData: ProjectType[];
-  taskData: TaskType[];
-};
+const RecentProjects = async () => {
+  const projectData = await getProjectData();
+  const taskData = await getTaskData();
 
-const RecentProjects: FC<Props> = ({ projectData, taskData }) => {
-  const [projects, setProjects] = useState<ProjectType[]>(projectData);
-  projects.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  projectData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   return (
     <div
       className={`${geistSans.className} col-span-3 font-medium border  rounded-xl dark:border-mist-800 border-mist-300 p-2`}
@@ -28,7 +24,7 @@ const RecentProjects: FC<Props> = ({ projectData, taskData }) => {
         </Link>
       </div>
       <div className="w-full p-3 space-y-3">
-        {projects.map((p) => (
+        {projectData.map((p) => (
           <div key={p.id} className="flex items-center justify-between">
             <div>
               <p className="font-medium">{p.project_name}</p>

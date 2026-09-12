@@ -19,7 +19,7 @@ export const AllProjects = ({
   projectId: number;
 
   deleteItem: (id: number) => void;
-  taskData: TaskType[];
+  taskData: TaskType[] | undefined;
 }) => {
   const handleDelete = () => {
     deleteItem(projectId);
