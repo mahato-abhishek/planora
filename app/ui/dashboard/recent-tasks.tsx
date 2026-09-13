@@ -1,7 +1,6 @@
-"use server";
 import { getTaskData } from "@/lib/actions/actions";
 import { geistSans } from "@/lib/fonts";
-
+import { TaskType } from "@/lib/types/types";
 import Link from "next/link";
 
 import {
@@ -10,13 +9,13 @@ import {
   FcMediumPriority,
 } from "react-icons/fc";
 
-export const RecentTasks = async () => {
-  const taskData = await getTaskData();
-
-  taskData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+export const RecentTasks = ({ taskData }: { taskData: TaskType[] }) => {
+  const sortedTasks = [...taskData].sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
   return (
     <div
-      className={`${geistSans.className} col-span-2 border rounded-xl dark:border-mist-800 border-mist-300 p-2`}
+      className={`${geistSans.className} col-span-2 border rounded-xl dark:border-mist-800 border-mist-300 p-2 h-105 overflow-hidden`}
     >
       <div className=" flex items-center p-4 justify-between border-b border-mist-300 dark:border-mist-800">
         <p className="font-semibold ">Recent Tasks</p>
@@ -28,7 +27,7 @@ export const RecentTasks = async () => {
         </Link>
       </div>
       <div className="w-full p-3 space-y-3 ">
-        {taskData.map((task) => (
+        {sortedTasks.map((task) => (
           <div key={task.id} className="flex items-center justify-between">
             <div>
               <p className="font-medium ">{task.task_name}</p>

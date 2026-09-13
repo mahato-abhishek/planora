@@ -1,6 +1,5 @@
 "use client";
-import Header from "@/app/components/header";
-import { RiTodoLine } from "react-icons/ri";
+
 import { NewProject } from "@/app/ui/projects/new-project";
 import { useState, FC } from "react";
 import { deleteProject } from "@/lib/actions/actions";
@@ -29,7 +28,6 @@ const ProjectView: FC<Props> = ({ projectData, taskData }) => {
 
   return (
     <div>
-      <Header name="Projects" icon={<RiTodoLine />} />
       <div className="flex items-center justify-between p-4 ">
         <div className="flex items-center justify-center gap-2 bg-mist-100 border dark:border-mist-700 border-mist-300 dark:bg-mist-800 rounded-full p-1">
           {catagories.map((category) => (
@@ -53,7 +51,7 @@ const ProjectView: FC<Props> = ({ projectData, taskData }) => {
           + New Project
         </button>
       </div>
-      <div className="p-4   ">
+      <div className="p-4 ">
         <div className="grid grid-cols-3 gap-5">
           {projects
             ?.filter(
@@ -74,7 +72,6 @@ const ProjectView: FC<Props> = ({ projectData, taskData }) => {
             ))}
         </div>
       </div>
-
       {projectOpen && (
         <NewProject
           closeTask={setProjectOpen}

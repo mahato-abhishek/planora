@@ -32,6 +32,7 @@ export const NewProject = ({
       description: formData.get("description"),
       date: formData.get("date"),
     };
+
     const projectNames = projects?.map((project) => project.project_name);
     if (projectNames) {
       for (let name of projectNames) {
@@ -40,7 +41,6 @@ export const NewProject = ({
           return;
         }
       }
-      return;
     }
 
     try {

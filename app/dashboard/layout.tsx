@@ -1,28 +1,25 @@
-"use client";
 import SideNav from "@/app/ui/sidenav/sidenav";
-import { getUser } from "@/lib/actions/actions";
-import { useEffect, useState } from "react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  type Props = {
-    userName: string | undefined;
-    email: string | undefined;
-  };
-  const [session, setSession] = useState<Props | null>();
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getUser();
-      setSession({ userName: user?.name, email: user?.email });
-      console.log(user);
-    };
-    fetchUser();
-  }, []);
+  if (!session) {
+    return <div>Not authenticated</div>;
+  }
+  console.log("layout render");
 
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden ">
       <div className="w-full hidden lg:block flex-none md:w-64 border-r border-gray-300 dark:border-gray-700">
-        <SideNav name={session?.userName} email={session?.email} />
+        <SideNav name={session.user.name} email={session.user.email} />
       </div>
       <div className="grow p-2 md:overflow-y-auto dark:bg-mist-950 bg-mist-50">
         {children}

@@ -20,7 +20,7 @@ export const NewTask = ({
   const searchboxRef = useRef<HTMLDivElement>(null!);
   useClickOutside(searchboxRef, () => closeTask(false));
   const [task, setTask] = useState("");
-  const [projectName, setProjectName] = useState(projectData[0].project_name);
+  const [projectName, setProjectName] = useState(projectData[0]?.project_name);
   const [date, setDate] = useState("");
   const [priority, setPriority] = useState("");
   const [description, setDescription] = useState("");
@@ -172,7 +172,7 @@ export const NewTask = ({
                   >
                     <option value="To Do">To Do</option>
                     <option value="In Progress">In Progress</option>
-                    <option value="In Review">In Review</option>
+                    <option value="Review">In Review</option>
                     <option value="Done">Done</option>
                   </select>
                 </div>

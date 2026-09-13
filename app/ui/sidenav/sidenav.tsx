@@ -36,7 +36,7 @@ export default function SideNav({
   email: string | undefined;
 }) {
   const pathname = usePathname();
-  console.log(pathname);
+  console.log("SideNav render");
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2 gap-4 dark:bg-mist-900 bg-mist-100">
       <Link

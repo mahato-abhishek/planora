@@ -35,7 +35,7 @@ export const AllTasks = ({
   const [acitveStatus, setActiveStatus] = useState<boolean>(false);
 
   const statusArr = [
-    { name: "To do", icon: <TbCircleDashed size="16" fill="grey" /> },
+    { name: "To Do", icon: <TbCircleDashed size="16" fill="grey" /> },
     { name: "In Progress", icon: <RiProgress2Line size="16" fill="blue" /> },
     { name: "In Review", icon: <TbAlertCircleFilled size="16" fill="red" /> },
     { name: "Done", icon: <MdCheckCircle size="16" fill="green" /> },
@@ -67,27 +67,29 @@ export const AllTasks = ({
         {date}
       </p>
 
-      <div className="text-center flex justify-center h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 ">
+      <div className="text-center relative flex justify-left h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 ">
         {" "}
         <button
           onClick={() => setActiveStatus((prev) => !prev)}
-          className=" absolute flex items-center justify-center gap-2 border-2 rounded-full py-1 px-2 text-sm border-mist-300 dark:border-mist-700 cursor-pointer"
+          className="absolute flex items-center justify-center gap-1 border-2 rounded-full py-1 px-2 text-[13px] border-mist-300 dark:border-mist-700 cursor-pointer"
         >
-          {status === "To do" ? (
-            <TbCircleDashed size="20" fill="grey" />
+          {status === "To Do" ? (
+            <TbCircleDashed size="16" fill="grey" />
           ) : status === "In Progress" ? (
-            <RiProgress2Line size="20" fill="blue" />
+            <RiProgress2Line size="16" fill="blue" />
           ) : status === "In Review" ? (
-            <TbAlertCircleFilled size="20" fill="red" />
+            <TbAlertCircleFilled size="16" fill="red" />
           ) : status === "Done" ? (
-            <MdCheckCircle size="20" fill="green" />
+            <MdCheckCircle size="16" fill="green" />
           ) : (
             ""
-          )}{" "}
+          )}
+
           {status}
+          {"  ⏷"}
         </button>
         {acitveStatus && (
-          <div className="border  rounded-lg z-50 relative top-9 left-[-4px] bg-mist-50 border-mist-300 dark:bg-mist-800 dark:border-mist-600 flex flex-col gap-1 p-1  text-sm">
+          <div className="border  rounded-lg z-20 relative top-9 left-[-4px] bg-mist-50 border-mist-300 dark:bg-mist-800 dark:border-mist-600 flex flex-col gap-1 p-1  text-sm">
             {statusArr.map((val) => (
               <button
                 value={val.name}
@@ -102,17 +104,17 @@ export const AllTasks = ({
           </div>
         )}
       </div>
-      <p className="text-left h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 flex justify-center gap-4">
-        {priority}
+      <p className="text-left h-full py-2 col-span-2 border-r dark:border-mist-700 border-mist-300 flex justify-left gap-2">
         {priority === "Low" ? (
-          <FcLowPriority size="24" />
+          <FcLowPriority size="20" />
         ) : priority === "Medium" ? (
-          <FcMediumPriority size="24" />
+          <FcMediumPriority size="20" />
         ) : priority === "High" ? (
-          <FcHighPriority size="24" />
+          <FcHighPriority size="20" />
         ) : (
           ""
         )}
+        {priority}
       </p>
 
       <div className="flex  gap-2">

@@ -1,18 +1,20 @@
-"use server";
 import Link from "next/link";
 import { geistSans } from "@/lib/fonts";
-
+import { TaskType } from "@/lib/types/types";
+import { ProjectType } from "@/lib/types/types";
 import { Progress } from "../projects/progress";
-import { getProjectData, getTaskData } from "@/lib/actions/actions";
 
-const RecentProjects = async () => {
-  const projectData = await getProjectData();
-  const taskData = await getTaskData();
-
+const RecentProjects = ({
+  projectData,
+  taskData,
+}: {
+  projectData: ProjectType[];
+  taskData: TaskType[];
+}) => {
   projectData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   return (
     <div
-      className={`${geistSans.className} col-span-3 font-medium border  rounded-xl dark:border-mist-800 border-mist-300 p-2`}
+      className={`${geistSans.className} col-span-3 font-medium border  rounded-xl dark:border-mist-800 border-mist-300 p-2 h-105 overflow-hidden`}
     >
       <div className=" flex items-center p-4 justify-between border-b border-mist-300 dark:border-mist-800">
         <p className="font-semibold ">Recent Projects</p>
@@ -23,7 +25,7 @@ const RecentProjects = async () => {
           View All
         </Link>
       </div>
-      <div className="w-full p-3 space-y-3">
+      <div className="w-full p-3 space-y-3 ">
         {projectData.map((p) => (
           <div key={p.id} className="flex items-center justify-between">
             <div>

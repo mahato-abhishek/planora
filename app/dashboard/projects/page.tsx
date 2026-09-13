@@ -1,4 +1,5 @@
 "use server";
+import { TaskSkeleton } from "@/app/skeleton/task-skeleton";
 import ProjectView from "@/app/ui/projects/projects-overview";
 import { getProjectData, getTaskData } from "@/lib/actions/actions";
 import { ProjectType, TaskType } from "@/lib/types/types";

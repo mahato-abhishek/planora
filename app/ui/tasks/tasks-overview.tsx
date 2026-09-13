@@ -14,7 +14,7 @@ interface Props {
   taskData: TaskType[];
   projectData: ProjectType[];
 }
-const catagories = ["All Tasks", "To do", "In Progress", "In Review", "Done"];
+const catagories = ["All Tasks", "To Do", "In Progress", "In Review", "Done"];
 const TaskView: FC<Props> = ({ taskData, projectData }) => {
   const [taskOpen, setTaskOpen] = useState(false);
   const [active, setActive] = useState("All Tasks");
@@ -36,7 +36,6 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
 
   return (
     <div>
-      <Header name="Tasks" icon={<FaTasks />} />
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center justify-center gap-2 bg-mist-100 border dark:border-mist-700 border-mist-300 dark:bg-mist-800 rounded-full p-1">
           {catagories.map((category) => (

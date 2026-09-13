@@ -2,7 +2,6 @@ import Image from "next/image";
 import profile from "@/public/profile.webp";
 import { useState } from "react";
 import { SignOut } from "../../ui/sign-out";
-import { Sign } from "crypto";
 
 type Props = {
   size: number;

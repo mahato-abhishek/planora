@@ -5,8 +5,7 @@ import { spaceMono } from "@/lib/fonts";
 import { FcTodoList } from "react-icons/fc";
 import { RiTodoLine } from "react-icons/ri";
 import { ProjectType, TaskType } from "@/lib/types/types";
-import { getProjectData } from "@/lib/actions/actions";
-import { getTaskData } from "@/lib/actions/actions";
+
 type Props = {
   title: string;
   count: number;
@@ -17,9 +16,13 @@ type props = {
   taskData: TaskType[];
 };
 
-export const DashOverview = async () => {
-  const projectData: ProjectType[] = await getProjectData();
-  const taskData: TaskType[] = await getTaskData();
+const DashOverview = ({
+  projectData,
+  taskData,
+}: {
+  projectData: ProjectType[];
+  taskData: TaskType[];
+}) => {
   const viewList = [
     {
       title: "TOTAL PROJECTS",
@@ -85,3 +88,4 @@ export const DashOverview = async () => {
     </div>
   );
 };
+export default DashOverview;
