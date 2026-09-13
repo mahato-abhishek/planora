@@ -7,7 +7,7 @@ export default async function Layout({
 }) {
   return (
     <>
-      <Header name="Tasks" icon={<RiHome6Fill />} />
+      <Header name="Dashboard" icon={<RiHome6Fill />} />
       <div className="grow p-2 ">{children}</div>
     </>
   );
