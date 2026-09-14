@@ -7,10 +7,10 @@ export const Hero = () => {
       id="hero"
       className="min-h-screen max-w-6xl w-98/100 mx-auto  pt-20 flex items-center flex-col"
     >
-      <p className="text-7xl pt-12 text-center max-w-3xl w-98/100">
+      <p className="lgtext-7xl sm:text-6xl text-5xl pt-12 text-center max-w-3xl w-98/100">
         Work flows better when everything clicks
       </p>
-      <p className="text-lg dark:text-mist-400 text-mist-800 text-center p-5 max-w-xl w-98/100">
+      <p className="sm:text-lg text-md dark:text-mist-400 text-mist-800 text-center p-5 max-w-xl w-98/100">
         Planora inspires you to dream higher, react beyond potential, bring team
         members together and celebrate success.
       </p>

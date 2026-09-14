@@ -2,7 +2,7 @@ import { FaFolder, FaRegCircleCheck } from "react-icons/fa6";
 import { BsListTask } from "react-icons/bs";
 import { GiProgression } from "react-icons/gi";
 
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaArrowDown } from "react-icons/fa6";
 
 export const Solutions = () => {
   const data = [
@@ -38,15 +38,15 @@ export const Solutions = () => {
           How it works
         </p>
         <div>
-          <p className="text-3xl font-semibold p-2">
+          <p className=" text-2xl sm:text-3xl text-center font-semibold p-2">
             From idea to execution, effortlessly
           </p>
-          <p className="dark:text-mist-400 text-center">
+          <p className="dark:text-mist-400 text-sm sm:text-md text-center">
             Get started with planora in just few simple steps.
           </p>
         </div>
 
-        <div className="grid grid-cols-4  gap-10">
+        <div className="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-4  gap-10">
           {data.map((val) => (
             <div
               key={val.name}
@@ -54,7 +54,8 @@ export const Solutions = () => {
             >
               <div className="flex items-center justify-between">
                 {val.icon}
-                <FaArrowRight size="24" />
+                <FaArrowRight size="24" className="hidden sm:block" />
+                <FaArrowDown size="24" className="sm:hidden" />
               </div>
 
               <p className="text-xl font-bold ">

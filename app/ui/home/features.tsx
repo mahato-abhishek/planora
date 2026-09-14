@@ -40,16 +40,16 @@ export const Features = () => {
           Features
         </p>
         <div>
-          <p className="text-3xl font-semibold p-2">
+          <p className=" text-2xl sm:text-3xl  font-semibold p-2 text-center">
             Everything You Need, in one place
           </p>
-          <p className="dark:text-mist-400">
+          <p className=" text-sm sm:text-md dark:text-mist-400 text-center">
             Planora gives you the tool to manage your work efficently and stay
             productive.
           </p>
         </div>
 
-        <div className="grid grid-cols-4  gap-4">
+        <div className="grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-4">
           {data.map((val) => (
             <div
               key={val.name}

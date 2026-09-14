@@ -8,11 +8,10 @@ export const Nav = () => {
           <a className="text-2xl px-2 font-bold " href="#hero">
             Planora
           </a>
-          <div className="flex items-center justify-center gap-4  ">
+          <div className=" hidden lg:flex items-center justify-center gap-4  ">
             <a href="#features">Features</a>
             <a href="#solutions">Solutions</a>
-            <a href="#resources">Resources</a>
-            <a href="#about">About</a>
+            <a href="#resources">highlights</a>
           </div>
           <div className="flex items-center justify-center gap-4">
             <Link
