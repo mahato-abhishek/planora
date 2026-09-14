@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, signUp } from "@/lib/actions/auth-actions";
+import { signIn, signInSocial, signUp } from "@/lib/actions/auth-actions";
 
 export default function AuthClientPage() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -14,7 +14,22 @@ export default function AuthClientPage() {
   const router = useRouter();
 
   // Get callback URL from search params (set by middleware)
+  const handleSocialAuth = async (provider: "google") => {
+    setIsLoading(true);
+    setError("");
 
+    try {
+      await signInSocial(provider);
+    } catch (err) {
+      setError(
+        `Error authenticating with ${provider}: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -87,6 +102,7 @@ export default function AuthClientPage() {
           {/* Social Authentication */}
           <div className="space-y-3">
             <button
+              onClick={() => handleSocialAuth("google")}
               disabled={isLoading}
               className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >

@@ -23,7 +23,7 @@ export const Solutions = () => {
     },
     {
       icon: <FaRegCircleCheck size="24" />,
-      name: "Get Things Dome",
+      name: "Get Things Done",
       description: "Complete your task and achieve your goals.",
     },
   ];
