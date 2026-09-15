@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# Planora
+
+### Modern project and task management platform built with Next.js
+
+Planora is a full-stack project management application designed to help users organize projects, manage tasks, and keep track of their work through a clean and responsive dashboard.
+
+**Live Demo:** https://planora-jet.vercel.app/
+
+---
+
+## ✨ Features
+
+* 🔐 User authentication and session management
+* 📁 Project management
+* ✅ Task creation and management
+* 📅 Task scheduling
+* 👤 User-specific data
+* 📊 Dashboard and project overview
+* 📱 Responsive interface
+* 🧩 Reusable React components
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend**
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+
+**Backend**
+
+* Next.js Server Actions
+* Server-side data handling
+
+**Database**
+
+* PostgreSQL
+* Neon
+* Drizzle ORM
+
+**Authentication**
+
+* Better Auth
+
+---
+
+## 🏗️ Architecture
+
+```text
+Next.js App Router
+       │
+       ├── React UI
+       │
+       ├── Server Actions
+       │
+       ├── Better Auth
+       │
+       └── Drizzle ORM
+                │
+                ▼
+          Neon PostgreSQL
+```
+
+---
+
+## 📸 Screenshots
+
+### Dashboard
+
+<img width="1906" height="1018" alt="dash-light" src="https://github.com/user-attachments/assets/6ea5cfe0-6517-4a18-b6f6-fb44fd1a327a" />
+
+
+### Projects
+
+<img width="1903" height="1018" alt="projects-light" src="https://github.com/user-attachments/assets/1a7c1924-8204-47d2-a805-449e43bdb15a" />
+
+
+### Task Management
+
+<img width="1904" height="1025" alt="tasks-light" src="https://github.com/user-attachments/assets/0458b7ad-4cb7-4066-ba30-df70abec086b" />
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Node.js 18+
+* PostgreSQL / Neon database
+
+### Installation
+
+```bash
+git clone https://github.com/mahato-abhishek/planora.git
+cd planora
+npm install
+```
+
+Create a `.env` file with the required environment variables.
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💡 What I Learned
 
-## Learn More
+Building Planora gave me practical experience with:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Next.js App Router architecture
+* Server-side data handling
+* Authentication and sessions
+* Relational database design
+* Type-safe database queries with Drizzle
+* Building reusable React components
+* Managing authenticated user-specific data
+* Designing responsive application dashboards
