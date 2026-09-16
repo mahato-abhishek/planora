@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Planora: Changes and Architecture Guide</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 18mm 17mm 18mm 17mm;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        color: #202124;
+        line-height: 1.45;
+        font-size: 10.5pt;
+      }
+      h1 {
+        color: #101828;
+        font-size: 28pt;
+        margin: 0 0 8pt;
+      }
+      h2 {
+        color: #1f2937;
+        font-size: 18pt;
+        border-bottom: 1px solid #cfd4dc;
+        padding-bottom: 4pt;
+        margin-top: 22pt;
+      }
+      h3 {
+        color: #374151;
+        font-size: 13pt;
+        margin-top: 15pt;
+      }
+      p {
+        margin: 6pt 0;
+      }
+      .cover {
+        min-height: 230mm;
+        padding-top: 45mm;
+      }
+      .subtitle {
+        font-size: 15pt;
+        color: #667085;
+      }
+      .meta {
+        margin-top: 35pt;
+        padding: 14pt;
+        background: #f1f3f5;
+        border-left: 4px solid #202124;
+      }
+      .note {
+        padding: 9pt 12pt;
+        background: #f5f6f7;
+        border-left: 3px solid #667085;
+        margin: 9pt 0;
+      }
+      .warning {
+        padding: 9pt 12pt;
+        background: #fff6e5;
+        border-left: 3px solid #c47f00;
+        margin: 9pt 0;
+      }
+      code {
+        font-family: Consolas, monospace;
+        font-size: 9pt;
+        background: #f1f3f5;
+        padding: 1pt 3pt;
+      }
+      pre {
+        font-family: Consolas, monospace;
+        font-size: 8pt;
+        line-height: 1.35;
+        background: #1f2329;
+        color: #f1f3f5;
+        padding: 10pt;
+        white-space: pre-wrap;
+        border-radius: 3pt;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 9pt 0 14pt;
+      }
+      th,
+      td {
+        border: 1px solid #cfd4dc;
+        padding: 6pt;
+        vertical-align: top;
+      }
+      th {
+        background: #eef0f2;
+        text-align: left;
+      }
+      .small {
+        color: #667085;
+        font-size: 9pt;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .flow {
+        font-family: Consolas, monospace;
+        background: #f5f6f7;
+        padding: 10pt;
+        white-space: pre-wrap;
+      }
+      li {
+        margin: 3pt 0;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="cover">
+      <h1>Planora</h1>
+      <p class="subtitle">Changes, architecture, and implementation guide</p>
+      <div class="meta">
+        <p>
+          <strong>Purpose:</strong> Explain what was built, how each section
+          works, and where to read the code.
+        </p>
+        <p>
+          <strong>Project:</strong> Full-stack project and task management
+          application
+        </p>
+        <p>
+          <strong>Stack:</strong> Next.js App Router, React, TypeScript,
+          Tailwind CSS, Better Auth, Drizzle ORM, PostgreSQL/Neon
+        </p>
+        <p><strong>Generated:</strong> September 16, 2026</p>
+      </div>
+      <p class="small">
+        This guide describes the current repository. Environment secrets are
+        intentionally excluded.
+      </p>
+    </section>
+
+    <h2>1. What Planora Does</h2>
+    <p>
+      Planora is an authenticated workspace for managing projects, tasks,
+      deadlines, and progress. A user signs in, sees a dashboard summary,
+      manages projects and tasks, moves tasks through statuses, and uses a
+      calendar to understand upcoming work.
+    </p>
+    <table>
+      <tr>
+        <th>Area</th>
+        <th>What it provides</th>
+        <th>Main route</th>
+      </tr>
+      <tr>
+        <td>Landing page</td>
+        <td>
+          Product introduction, screenshots, feature explanation, workflow, demo
+          entry point
+        </td>
+        <td><code>/</code></td>
+      </tr>
+      <tr>
+        <td>Authentication</td>
+        <td>Email/password, Google OAuth, demo login</td>
+        <td><code>/auth</code></td>
+      </tr>
+      <tr>
+        <td>Dashboard</td>
+        <td>Counts, recent projects, recent tasks, quick action</td>
+        <td><code>/dashboard</code></td>
+      </tr>
+      <tr>
+        <td>Projects</td>
+        <td>Create, edit, delete, filter, progress display</td>
+        <td><code>/dashboard/projects</code></td>
+      </tr>
+      <tr>
+        <td>Tasks</td>
+        <td>Create, edit, delete, filter, list view, Kanban drag/drop</td>
+        <td><code>/dashboard/tasks</code></td>
+      </tr>
+      <tr>
+        <td>Schedule</td>
+        <td>Interactive monthly calendar and selected-day agenda</td>
+        <td><code>/dashboard/schedule</code></td>
+      </tr>
+    </table>
+
+    <h2>2. High-Level Architecture</h2>
+    <div class="flow">
+      Browser | | Next.js App Router navigation v Layouts and pages in
+      app/dashboard/ | | Server Components fetch authenticated data v Server
+      actions in lib/actions/actions.ts | +--> getUser() -> Better Auth session
+      | +--> Drizzle ORM queries | v PostgreSQL / Neon Client components receive
+      server data | +--> local UI state: filters, modals, view mode +--> server
+      actions: create, edit, delete, status changes +--> dnd-kit: Kanban
+      drag/drop
+    </div>
+    <p>
+      Pages own server-side data loading. Interactive components use
+      <code>"use client"</code> and receive typed data as props. This keeps
+      database access on the server while allowing responsive UI interactions in
+      the browser.
+    </p>
+
+    <h2>3. Folder Map</h2>
+    <table>
+      <tr>
+        <th>Folder/file</th>
+        <th>Responsibility</th>
+      </tr>
+      <tr>
+        <td><code>app/page.tsx</code></td>
+        <td>Landing page composition.</td>
+      </tr>
+      <tr>
+        <td><code>app/layout.tsx</code></td>
+        <td>Root HTML, fonts, theme initialization, global body.</td>
+      </tr>
+      <tr>
+        <td><code>app/dashboard/layout.tsx</code></td>
+        <td>
+          Authenticated dashboard shell, desktop sidebar, mobile bottom
+          navigation, independent scrolling.
+        </td>
+      </tr>
+      <tr>
+        <td><code>app/ui/home/</code></td>
+        <td>Landing sections and product screenshot gallery.</td>
+      </tr>
+      <tr>
+        <td><code>app/ui/dashboard/</code></td>
+        <td>Greeting, summary metrics, recent projects, recent tasks.</td>
+      </tr>
+      <tr>
+        <td><code>app/ui/projects/</code></td>
+        <td>Project cards, progress, project modal, projects page.</td>
+      </tr>
+      <tr>
+        <td><code>app/ui/tasks/</code></td>
+        <td>Task page, list rows, Kanban board, task modal.</td>
+      </tr>
+      <tr>
+        <td><code>app/ui/schedule/</code></td>
+        <td>Interactive month calendar and loading state.</td>
+      </tr>
+      <tr>
+        <td><code>app/ui/searchbox.tsx</code></td>
+        <td>Command-style search across projects and tasks.</td>
+      </tr>
+      <tr>
+        <td><code>lib/actions/</code></td>
+        <td>
+          Server actions for authentication and database mutations/queries.
+        </td>
+      </tr>
+      <tr>
+        <td><code>lib/auth.ts</code></td>
+        <td>Better Auth configuration.</td>
+      </tr>
+      <tr>
+        <td><code>db/schema.ts</code></td>
+        <td>
+          PostgreSQL schema definition for users, sessions, accounts, projects,
+          and tasks.
+        </td>
+      </tr>
+    </table>
+
+    <div class="page-break"></div>
+    <h2>4. Landing Page</h2>
+    <p>The landing page is composed in <code>app/page.tsx</code>:</p>
+    <pre>
+Nav
+Hero
+Benefits
+Features
+ProductPreview
+Solutions
+FinalCta</pre
+    >
+    <h3>Navigation</h3>
+    <p>
+      <code>app/ui/home/nav-bar.tsx</code> provides desktop section links, an
+      authentication CTA, and a mobile menu. It is a client component because
+      the mobile menu uses React state.
+    </p>
+    <h3>Hero and demo login</h3>
+    <p>
+      <code>app/ui/home/hero.tsx</code> contains the main product message,
+      dashboard screenshot, normal authentication link, and the live demo
+      button. The demo button calls <code>signInDemo()</code>, which uses the
+      configured test account and redirects to the dashboard after a successful
+      session.
+    </p>
+    <pre>
+const result = await signInDemo();
+if (!result.user) throw new Error("The demo account is not available yet.");
+router.push("/dashboard");</pre
+    >
+    <div class="warning">
+      <strong>Important:</strong> The demo account must exist in the database.
+      Do not expose production credentials in source code. For a real
+      deployment, use a dedicated seeded demo account and protect or rate-limit
+      the demo login.
+    </div>
+    <h3>Product screenshot gallery</h3>
+    <p>
+      <code>app/ui/home/product-preview.tsx</code> uses the existing images in
+      <code>public/</code>:
+    </p>
+    <ul>
+      <li><code>dash-dark.png</code>: dashboard overview.</li>
+      <li><code>projects-dark.png</code>: project management view.</li>
+      <li><code>tasks-dark.png</code>: task management view.</li>
+      <li><code>schedule-dark.png</code>: schedule/calendar view.</li>
+    </ul>
+    <p>
+      The gallery uses a large dashboard preview and three responsive product
+      cards. On mobile, cards stack; on desktop, they form a three-column
+      product tour.
+    </p>
+    <h3>Other landing sections</h3>
+    <ul>
+      <li><code>benefits.tsx</code>: concise value summary.</li>
+      <li>
+        <code>features.tsx</code>: projects, tasks, progress, and schedule
+        capabilities.
+      </li>
+      <li>
+        <code>solution.tsx</code>: the four-step flow from project creation to
+        completion.
+      </li>
+      <li><code>final-cta.tsx</code>: final conversion action and footer.</li>
+    </ul>
+
+    <h2>5. Authentication</h2>
+    <p>Authentication is provided by Better Auth with a Drizzle adapter.</p>
+    <h3>Configuration</h3>
+    <p><code>lib/auth.ts</code> sets:</p>
+    <ul>
+      <li><code>baseURL</code> from <code>BETTER_AUTH_URL</code>.</li>
+      <li><code>basePath: "/api/auth"</code>.</li>
+      <li>Email/password authentication.</li>
+      <li>Google social provider.</li>
+      <li><code>nextCookies()</code> integration.</li>
+    </ul>
+    <p>
+      The route handler at <code>app/api/auth/[...all]/route.ts</code> exposes
+      Better Auth GET and POST handlers.
+    </p>
+    <h3>Email flow</h3>
+    <div class="flow">
+      AuthClientPage -> signIn(email, password) -> auth.api.signInEmail() ->
+      Better Auth creates/loads session -> router.push("/dashboard")
+    </div>
+    <h3>Google flow</h3>
+    <p>
+      <code>signInSocial()</code> asks Better Auth for an authorization URL and
+      returns it to the client. The browser navigates to that URL. This avoids
+      treating a server redirect as a normal return value.
+    </p>
+    <p>
+      Google Cloud Console must include the matching callback URL, normally:
+    </p>
+    <pre>http://localhost:3000/api/auth/callback/google</pre>
+    <h3>Session reuse</h3>
+    <p>
+      <code>getUser()</code> is wrapped with React <code>cache()</code>. This
+      memoizes the authenticated user within a request so the dashboard layout
+      and data actions do not repeat the same session lookup unnecessarily.
+    </p>
+
+    <div class="page-break"></div>
+    <h2>6. Dashboard</h2>
+    <p>The dashboard page loads projects and tasks in parallel:</p>
+    <pre>
+const [projectData, taskData] = await Promise.all([
+  getProjectData(),
+  getTaskData(),
+]);</pre
+    >
+    <p>
+      This avoids waiting for the project query before beginning the task query.
+    </p>
+    <h3>Dashboard layout</h3>
+    <p>
+      <code>app/dashboard/layout.tsx</code> protects the workspace by checking
+      <code>getUser()</code>. On large screens, the layout has a fixed
+      viewport-height sidebar and independently scrollable main area. On small
+      screens, the desktop sidebar is hidden and <code>MobileNav</code> provides
+      a fixed bottom navigation bar.
+    </p>
+    <h3>Summary cards</h3>
+    <p><code>dashboard-overview.tsx</code> computes:</p>
+    <ul>
+      <li>Total projects.</li>
+      <li>Total tasks.</li>
+      <li>Tasks in progress.</li>
+      <li>Tasks in review.</li>
+      <li>Completed tasks.</li>
+    </ul>
+    <p>
+      The cards are responsive: one column on small screens, two columns at
+      medium widths, and five columns on large screens.
+    </p>
+    <h3>Recent panels</h3>
+    <p>
+      <code>recent-projects.tsx</code> and <code>recent-tasks.tsx</code> display
+      a maximum of five items each. They retain “View All” links so the
+      dashboard stays compact without hiding data.
+    </p>
+
+    <h2>7. Projects</h2>
+    <p>
+      The projects page loads project rows and compact progress aggregates in
+      parallel. A project card contains:
+    </p>
+    <ul>
+      <li>Project name and type.</li>
+      <li>Priority badge.</li>
+      <li>Completed/total task progress.</li>
+      <li>Description.</li>
+      <li>Edit and delete actions.</li>
+    </ul>
+    <p>
+      <code>getProjectProgress()</code> uses a grouped database query instead of
+      loading every task row into the projects page. This reduces data
+      transferred for a projects-only view.
+    </p>
+    <h3>Project create/edit flow</h3>
+    <div class="flow">
+      New Project button -> ProjectView sets projectOpen -> NewProject opens in
+      create mode -> createProject() -> getProjectData() -> local project list
+      refreshes Edit button -> ProjectView stores selected project -> NewProject
+      opens with prefilled state -> updateProject() -> related task.project_name
+      values are synchronized -> projects and tasks paths revalidate
+    </div>
+    <p>
+      Duplicate project names are checked client-side before mutation, excluding
+      the project currently being edited.
+    </p>
+
+    <h2>8. Tasks and List View</h2>
+    <p>
+      <code>tasks-overview.tsx</code> owns the task state and shared handlers.
+      It supports filters:
+    </p>
+    <ul>
+      <li>All Tasks</li>
+      <li>To Do</li>
+      <li>In Progress</li>
+      <li>In Review</li>
+      <li>Done</li>
+    </ul>
+    <p>
+      The list view uses a deliberately wide table inside an overflow container.
+      This keeps all task fields available on mobile without forcing the whole
+      page to overflow.
+    </p>
+    <p>Each row supports:</p>
+    <ul>
+      <li>Status dropdown.</li>
+      <li>Priority display.</li>
+      <li>Deadline.</li>
+      <li>Edit action.</li>
+      <li>Delete action.</li>
+    </ul>
+    <p>
+      Status changes optimistically update local state, then call
+      <code>editTaskStatus()</code> to persist the change.
+    </p>
+
+    <h2>9. Kanban Board and Drag/Drop</h2>
+    <p>
+      <code>app/ui/tasks/kanban-board.tsx</code> uses
+      <code>@dnd-kit/core</code>.
+    </p>
+    <h3>Board structure</h3>
+    <p>There are four droppable columns:</p>
+    <table>
+      <tr>
+        <th>Column</th>
+        <th>Meaning</th>
+      </tr>
+      <tr>
+        <td>To Do</td>
+        <td>Ready to start</td>
+      </tr>
+      <tr>
+        <td>In Progress</td>
+        <td>Currently active</td>
+      </tr>
+      <tr>
+        <td>In Review</td>
+        <td>Needs a decision</td>
+      </tr>
+      <tr>
+        <td>Done</td>
+        <td>Completed work</td>
+      </tr>
+    </table>
+    <h3>Drag flow</h3>
+    <div class="flow">
+      PointerSensor detects a drag -> useDraggable identifies task id ->
+      useDroppable identifies target status column -> DragOverlay renders the
+      floating card -> onDragEnd reads over.id -> changeStatus(task.id,
+      nextStatus) -> TaskView updates local state -> editTaskStatus() persists
+      to database
+    </div>
+    <p>
+      The pointer activation distance is six pixels, preventing accidental drags
+      when clicking a card. The drag handle is separate from edit/delete
+      controls.
+    </p>
+
+    <div class="page-break"></div>
+    <h2>10. Schedule Calendar</h2>
+    <p>
+      The old deadline lists were replaced with an interactive month calendar in
+      <code>schedule-overview.tsx</code>.
+    </p>
+    <h3>Calendar behavior</h3>
+    <ul>
+      <li>Six-week grid always provides stable height.</li>
+      <li>Previous and next month controls update the visible month.</li>
+      <li>Today returns to the current month and selects today.</li>
+      <li>Project deadlines and task deadlines become calendar events.</li>
+      <li>Desktop cells show event labels.</li>
+      <li>Mobile cells show compact event dots.</li>
+      <li>Selecting a day updates the selected-day agenda below.</li>
+    </ul>
+    <h3>Date model</h3>
+    <p>
+      Events are normalized into a shared shape with id, title, date, type,
+      priority, status, and project name. <code>dateKey()</code> compares local
+      calendar dates rather than timestamps, avoiding time-of-day mismatches.
+    </p>
+
+    <h2>11. Search</h2>
+    <p>
+      <code>app/ui/searchbox.tsx</code> is a command-style workspace search.
+    </p>
+    <ul>
+      <li>Loads project and task data in parallel.</li>
+      <li>Searches project names.</li>
+      <li>Searches task names, project names, and descriptions.</li>
+      <li>Groups results into Projects and Tasks.</li>
+      <li>
+        Shows contextual metadata such as type, priority, status, and project.
+      </li>
+      <li>Supports Enter to open the first result and Escape to close.</li>
+      <li>Uses loading skeletons and a no-results state.</li>
+    </ul>
+    <p>
+      Search navigates to the relevant section rather than attempting to
+      duplicate project/task detail pages.
+    </p>
+
+    <h2>12. Theme Toggle</h2>
+    <p>
+      <code>app/components/theme-toggle.tsx</code> toggles the explicit
+      <code>dark</code> class on the root document element.
+    </p>
+    <ul>
+      <li>Uses a moon icon in light mode and sun icon in dark mode.</li>
+      <li>
+        Persists the preference as <code>planora-theme</code> in localStorage.
+      </li>
+      <li>
+        Uses <code>useSyncExternalStore</code> to avoid state-in-effect lint
+        problems.
+      </li>
+      <li>Root initialization reads saved preference or system preference.</li>
+      <li>
+        <code>globals.css</code> defines Tailwind's explicit dark variant.
+      </li>
+    </ul>
+    <p>
+      The theme initialization script is placed inside <code>body</code>, not
+      directly inside <code>html</code>, because a script cannot be a child of
+      the HTML element in React's document tree.
+    </p>
+
+    <h2>13. Responsive Design</h2>
+    <table>
+      <tr>
+        <th>Surface</th>
+        <th>Small screens</th>
+        <th>Large screens</th>
+      </tr>
+      <tr>
+        <td>Dashboard navigation</td>
+        <td>Fixed bottom navigation with four destinations.</td>
+        <td>Fixed-width sidebar with account area.</td>
+      </tr>
+      <tr>
+        <td>Dashboard cards</td>
+        <td>Stacked grid.</td>
+        <td>Five-column metric layout and two-panel activity layout.</td>
+      </tr>
+      <tr>
+        <td>Projects</td>
+        <td>One-column cards and horizontally scrollable filters.</td>
+        <td>Two/three-column card grid.</td>
+      </tr>
+      <tr>
+        <td>Tasks list</td>
+        <td>Contained horizontal scroll for dense fields.</td>
+        <td>Full-width task table.</td>
+      </tr>
+      <tr>
+        <td>Kanban</td>
+        <td>Stacked columns.</td>
+        <td>Four-column board.</td>
+      </tr>
+      <tr>
+        <td>Calendar</td>
+        <td>Horizontally scrollable 7-column grid with event dots.</td>
+        <td>Full labels and selected-day agenda.</td>
+      </tr>
+      <tr>
+        <td>Modals</td>
+        <td>Single-column fields, viewport-bounded scroll.</td>
+        <td>Two/three-column field groups.</td>
+      </tr>
+    </table>
+    <p>
+      The dashboard shell uses independent scrolling: the sidebar is constrained
+      to viewport height, while the main content scrolls separately. This
+      prevents long task pages from pushing the account panel out of view.
+    </p>
+
+    <h2>14. Loading and Performance</h2>
+    <ul>
+      <li>
+        Dashboard, projects, tasks, and schedule have route-level
+        <code>loading.tsx</code> files.
+      </li>
+      <li>
+        Loading screens mirror the actual destination geometry instead of using
+        one generic skeleton.
+      </li>
+      <li>Independent database requests use <code>Promise.all()</code>.</li>
+      <li>
+        Auth session lookup is request-memoized with React <code>cache()</code>.
+      </li>
+      <li>
+        Projects use aggregate progress data rather than loading all tasks.
+      </li>
+      <li>
+        Production is checked with <code>npm run build</code>; development mode
+        is slower because Next compiles routes on demand.
+      </li>
+    </ul>
+
+    <h2>15. Main Data and Mutation API</h2>
+    <table>
+      <tr>
+        <th>Function</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td><code>getUser()</code></td>
+        <td>Request-cached authenticated user.</td>
+      </tr>
+      <tr>
+        <td><code>getProjectData()</code></td>
+        <td>Current user's projects.</td>
+      </tr>
+      <tr>
+        <td><code>getProjectProgress()</code></td>
+        <td>Grouped total/completed task counts by project.</td>
+      </tr>
+      <tr>
+        <td><code>createProject()</code></td>
+        <td>Insert project for authenticated user.</td>
+      </tr>
+      <tr>
+        <td><code>updateProject()</code></td>
+        <td>Update project and synchronize related task project names.</td>
+      </tr>
+      <tr>
+        <td><code>deleteProject()</code></td>
+        <td>Delete user-owned project.</td>
+      </tr>
+      <tr>
+        <td><code>getTaskData()</code></td>
+        <td>Current user's tasks.</td>
+      </tr>
+      <tr>
+        <td><code>createTask()</code></td>
+        <td>Insert task with project relation and copied project name.</td>
+      </tr>
+      <tr>
+        <td><code>editTask()</code></td>
+        <td>Update task fields and project relation.</td>
+      </tr>
+      <tr>
+        <td><code>editTaskStatus()</code></td>
+        <td>Persist list/Kanban status changes.</td>
+      </tr>
+      <tr>
+        <td><code>deleteTask()</code></td>
+        <td>Delete user-owned task.</td>
+      </tr>
+    </table>
+    <p>
+      Mutations call <code>getUser()</code> and reject unauthenticated requests.
+      Database filters include the current user id for updates and deletes.
+    </p>
+
+    <div class="page-break"></div>
+    <h2>16. Running the Project</h2>
+    <h3>Install</h3>
+    <pre>npm install</pre>
+    <h3>Environment</h3>
+    <p>
+      Configure the required variables in a local <code>.env</code> file. Do not
+      commit secrets.
+    </p>
+    <pre>
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=http://localhost:3000
+DATABASE_URL=...
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...</pre
+    >
+    <h3>Commands</h3>
+    <table>
+      <tr>
+        <th>Command</th>
+        <th>Use</th>
+      </tr>
+      <tr>
+        <td><code>npm run dev</code></td>
+        <td>Start development server.</td>
+      </tr>
+      <tr>
+        <td><code>npm run lint</code></td>
+        <td>Run ESLint.</td>
+      </tr>
+      <tr>
+        <td><code>npx tsc --noEmit</code></td>
+        <td>Run TypeScript without emitting files.</td>
+      </tr>
+      <tr>
+        <td><code>npm run build</code></td>
+        <td>Create the production build.</td>
+      </tr>
+      <tr>
+        <td><code>npm run start</code></td>
+        <td>Start the compiled production server.</td>
+      </tr>
+    </table>
+    <h3>Useful verification sequence</h3>
+    <pre>
+npm run lint
+npx tsc --noEmit
+npm run build</pre
+    >
+
+    <h2>17. How to Read the Code</h2>
+    <ol>
+      <li>
+        Start at a route page such as <code>app/dashboard/tasks/page.tsx</code>.
+      </li>
+      <li>
+        Read its layout to understand shared navigation and header composition.
+      </li>
+      <li>
+        Read the page data calls and identify which server actions provide the
+        props.
+      </li>
+      <li>
+        Open the client component that owns local state, for example
+        <code>tasks-overview.tsx</code>.
+      </li>
+      <li>
+        Follow callbacks into <code>lib/actions/actions.ts</code> to see how
+        mutations reach the database.
+      </li>
+      <li>
+        Check the matching loading file to understand the intended loading
+        geometry.
+      </li>
+      <li>
+        Use <code>db/schema.ts</code> and <code>lib/types/types.ts</code> to
+        understand data shapes.
+      </li>
+    </ol>
+
+    <h2>18. Known Design and Engineering Notes</h2>
+    <ul>
+      <li>
+        Task data stores both <code>project_id</code> and
+        <code>project_name</code>. Project rename logic synchronizes the copied
+        name on related tasks.
+      </li>
+      <li>
+        The schedule calendar derives events from task and project deadlines; it
+        does not create a separate calendar table.
+      </li>
+      <li>
+        The Kanban board changes task status rather than persisting card order
+        within a status column.
+      </li>
+      <li>
+        The search modal loads the complete current user's project/task lists
+        when opened. For very large accounts, a server-side search endpoint
+        would scale better.
+      </li>
+      <li>
+        Current demo login depends on the test account existing in the database.
+      </li>
+      <li>
+        Production builds have been verified during development, but
+        browser-level interaction tests would provide additional confidence for
+        OAuth and drag/drop.
+      </li>
+    </ul>
+
+    <h2>19. Change Summary</h2>
+    <p>
+      The work completed across the project focused on turning a basic task app
+      into a complete responsive workspace:
+    </p>
+    <ul>
+      <li>
+        Improved landing page with product screenshots and full section flow.
+      </li>
+      <li>Added responsive dashboard shell and mobile bottom navigation.</li>
+      <li>Added light/dark mode persistence.</li>
+      <li>Added project and task create/edit flows.</li>
+      <li>
+        Added request-cached authentication and parallel route data loading.
+      </li>
+      <li>Added responsive loading screens.</li>
+      <li>Added responsive project and task redesigns.</li>
+      <li>Replaced schedule lists with an interactive calendar.</li>
+      <li>Added list/Kanban task views with dnd-kit drag/drop.</li>
+      <li>Redesigned search as a command-style workspace search.</li>
+      <li>
+        Fixed invalid HTML theme script placement and related hydration error.
+      </li>
+      <li>
+        Fixed lint and module-resolution issues found during verification.
+      </li>
+    </ul>
+
+    <p class="small">
+      End of guide. Source files are linked by path throughout this document so
+      the explanation can be followed directly in the repository.
+    </p>
+  </body>
+</html>

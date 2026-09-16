@@ -12,8 +12,9 @@ export function SignOut() {
   };
   return (
     <button
+      type="button"
       onClick={handleSignOut}
-      className="flex itmes-center justify-center gap-2 p-2 hover:bg-mist-300 dark:hover:bg-mist-600 cursor-pointer w-full rounded-lg"
+      className="flex w-full items-center justify-center gap-2 rounded-lg border border-mist-300 px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-50 dark:border-mist-700 dark:text-red-300 dark:hover:bg-red-950/30"
     >
       Sign Out <FaSignOutAlt size="20" />
     </button>
