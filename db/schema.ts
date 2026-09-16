@@ -1,4 +1,3 @@
-import { int } from "better-auth";
 import {
   pgTable,
   serial,

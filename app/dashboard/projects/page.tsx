@@ -1,11 +1,14 @@
 "use server";
-import { TaskSkeleton } from "@/app/skeleton/task-skeleton";
 import ProjectView from "@/app/ui/projects/projects-overview";
-import { getProjectData, getTaskData } from "@/lib/actions/actions";
-import { ProjectType, TaskType } from "@/lib/types/types";
+import { getProjectData, getProjectProgress } from "@/lib/actions/actions";
 
 export default async function Projects() {
-  const data: ProjectType[] = await getProjectData();
-  const taskData: TaskType[] = await getTaskData();
-  return <ProjectView projectData={data} taskData={taskData} />;
+  const [projectData, projectProgress] = await Promise.all([
+    getProjectData(),
+    getProjectProgress(),
+  ]);
+
+  return (
+    <ProjectView projectData={projectData} projectProgress={projectProgress} />
+  );
 }

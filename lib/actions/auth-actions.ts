@@ -1,7 +1,6 @@
 "use server";
 import { auth } from "../auth";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const signUp = async (email: string, password: string, name: string) => {
   const result = await auth.api.signUpEmail({
@@ -26,6 +25,10 @@ export const signIn = async (email: string, password: string) => {
   });
   return result;
 };
+
+export const signInDemo = async () => {
+  return signIn("test@email.com", "test@123");
+};
 export const signOut = async () => {
   const result = await auth.api.signOut({
     headers: await headers(),
@@ -33,14 +36,12 @@ export const signOut = async () => {
   return result;
 };
 export const signInSocial = async (provider: "google") => {
-  const { url } = await auth.api.signInSocial({
+  const result = await auth.api.signInSocial({
     body: {
       provider,
       callbackURL: "/dashboard",
     },
   });
 
-  if (url) {
-    redirect(url);
-  }
+  return result.url;
 };

@@ -1,4 +1,3 @@
-import { TaskType } from "@/lib/types/types";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Progress } from "./progress";
@@ -10,7 +9,8 @@ export const AllProjects = ({
   priority,
   projectId,
   deleteItem,
-  taskData,
+  editItem,
+  progress,
 }: {
   projectName: string;
   projectType: string;
@@ -19,49 +19,57 @@ export const AllProjects = ({
   projectId: number;
 
   deleteItem: (id: number) => void;
-  taskData: TaskType[] | undefined;
+  editItem: () => void;
+  progress?: { total: number; completed: number };
 }) => {
   const handleDelete = () => {
     deleteItem(projectId);
   };
 
   return (
-    <div className="flex flex-col gap-2 p-3 border rounded-xl dark:border-mist-700 border-mist-300 h-fit ">
-      <div className="flex items-center justify-between">
-        <p className="font-bold flex flex-col ">
-          {projectName}
-          <span className="text-sm font-medium dark:text-mist-400 text-mist-600">
+    <article className="flex h-full min-w-0 flex-col gap-4 rounded-xl border border-mist-300 bg-mist-50 p-4 dark:border-mist-700 dark:bg-mist-950">
+      <div className="flex items-start justify-between gap-3">
+        <p className="flex min-w-0 flex-col gap-1">
+          <span className="truncate font-semibold">{projectName}</span>
+          <span className="truncate text-xs font-medium text-mist-600 dark:text-mist-400">
             {projectType}
           </span>
         </p>
         <span
-          className={` ${priority == "High" ? "bg-red-500" : ""} ${priority == "Medium" ? "bg-yellow-500" : ""} bg-green-600 rounded-full px-2 py-1 text-xs font-bold`}
+          className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${priority === "High" ? "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300" : priority === "Medium" ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300" : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"}`}
         >
           {priority}
         </span>
       </div>
 
-      <Progress projectName={projectName} taskData={taskData} />
+      <Progress progress={progress} />
       <div className="space-y-2">
-        <p className="text-sm font-semibold">Description</p>
-        <div className="border rounded h-fit border-mist-200 dark:border-mist-800 ">
-          <p className="p-2 text-sm text-gray-600 dark:text-gray-400 h-20 overflow-hidden">
-            {description}
-          </p>
+        <div className="flex items-center justify-between text-xs text-mist-500">
+          <span>Progress</span>
+          <span>
+            {progress?.completed ?? 0} / {progress?.total ?? 0} tasks
+          </span>
         </div>
+        <p className="line-clamp-2 min-h-10 text-sm text-mist-600 dark:text-mist-400">
+          {description || "No description"}
+        </p>
       </div>
-      <hr className="text-mist-300 dark:text-mist-800 my-1" />
-      <div className="flex items-center justify-between ">
+      <div className="mt-auto flex items-center justify-between border-t border-mist-200 pt-3 dark:border-mist-800">
         <button
           onClick={handleDelete}
           className="px-2 py-1 border rounded-full border-mist-300 dark:border-mist-700 cursor-pointer"
         >
           <MdDelete fill="red" size="20" />
         </button>
-        <button className="px-2 py-1 border rounded-full border-mist-300 dark:border-mist-700 ">
+        <button
+          type="button"
+          onClick={editItem}
+          aria-label={`Edit ${projectName}`}
+          className="px-2 py-1 border rounded-full border-mist-300 dark:border-mist-700 "
+        >
           <FaRegEdit size="18" />
         </button>
       </div>
-    </div>
+    </article>
   );
 };

@@ -5,16 +5,33 @@ import { spaceMono } from "@/lib/fonts";
 import { FcTodoList } from "react-icons/fc";
 import { RiTodoLine } from "react-icons/ri";
 import { ProjectType, TaskType } from "@/lib/types/types";
+import { RiArrowUpLine } from "react-icons/ri";
 
 type Props = {
   title: string;
   count: number;
   icon: React.ReactElement;
 };
-type props = {
-  projectData: ProjectType[];
-  taskData: TaskType[];
-};
+const OverviewCard = ({ title, count, icon }: Props) => (
+  <div className="min-w-0 rounded-xl border border-mist-300 bg-mist-50 p-4 dark:border-mist-800 dark:bg-mist-950 sm:p-5">
+    <div className="flex items-center justify-between gap-2">
+      <p
+        className={`${spaceMono.className} truncate text-xs font-bold uppercase tracking-wide text-mist-600 dark:text-mist-400`}
+      >
+        {title}
+      </p>
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-mist-200 dark:bg-mist-800">
+        {icon}
+      </span>
+    </div>
+    <div className="mt-5 flex items-end justify-between gap-2">
+      <p className="text-3xl font-semibold tracking-tight">{count}</p>
+      <span className="flex items-center gap-1 text-xs text-mist-500">
+        <RiArrowUpLine size="14" /> Live
+      </span>
+    </div>
+  </div>
+);
 
 const DashOverview = ({
   projectData,
@@ -52,33 +69,10 @@ const DashOverview = ({
       icon: <BiSolidCheckCircle fill="green" size="16" />,
     },
   ];
-  const Overviews = (props: Props) => {
-    return (
-      <div
-        className={`  border rounded-xl p-5 border-mist-300  dark:border-mist-800 hover:shadow-md flex  justify-left gap-4 flex-col`}
-      >
-        <div className="flex gap-2">
-          {" "}
-          {props.icon}
-          <p
-            className={`${spaceMono.className}  font-bold text-sm dark:text-gray-300 text-gray-600`}
-          >
-            {props.title}
-          </p>
-        </div>
-        <p className="text-sm  text-gray-600 dark:text-gray-400">
-          <span className="text-4xl text-black dark:text-white">
-            {props.count}{" "}
-          </span>{" "}
-          {props.title === "TOTAL PROJECTS" ? "Projects" : "Tasks"}
-        </p>
-      </div>
-    );
-  };
   return (
-    <div className="grid grid-cols-5 h-fit  gap-4 p-4">
+    <div className="grid h-fit grid-cols-1 gap-3 p-3 sm:grid-cols-2 sm:gap-4 sm:p-4 lg:grid-cols-5">
       {viewList.map((list) => (
-        <Overviews
+        <OverviewCard
           key={list.title}
           title={list.title}
           icon={list.icon}

@@ -5,6 +5,8 @@ import { nextCookies } from "better-auth/next-js";
 import { schema } from "@/db/schema";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  basePath: "/api/auth",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,

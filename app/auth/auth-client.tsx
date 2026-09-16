@@ -19,7 +19,11 @@ export default function AuthClientPage() {
     setError("");
 
     try {
-      await signInSocial(provider);
+      const url = await signInSocial(provider);
+      if (!url) {
+        throw new Error("Google did not return an authorization URL");
+      }
+      window.location.assign(url);
     } catch (err) {
       setError(
         `Error authenticating with ${provider}: ${

@@ -1,4 +1,3 @@
-import { getTaskData } from "@/lib/actions/actions";
 import { geistSans } from "@/lib/fonts";
 import { TaskType } from "@/lib/types/types";
 import Link from "next/link";
@@ -15,10 +14,13 @@ export const RecentTasks = ({ taskData }: { taskData: TaskType[] }) => {
   );
   return (
     <div
-      className={`${geistSans.className} col-span-2 border rounded-xl dark:border-mist-800 border-mist-300 p-2 h-105 overflow-hidden`}
+      className={`${geistSans.className} col-span-1 min-w-0 overflow-hidden rounded-xl border border-mist-300 bg-mist-50 p-2 dark:border-mist-800 dark:bg-mist-950 lg:col-span-2`}
     >
       <div className=" flex items-center p-4 justify-between border-b border-mist-300 dark:border-mist-800">
-        <p className="font-semibold ">Recent Tasks</p>
+        <div>
+          <p className="font-semibold">Recent tasks</p>
+          <p className="mt-1 text-xs text-mist-500">Latest activity</p>
+        </div>
         <Link
           href="/dashboard/tasks"
           className="text-blue-700 dark:text-blue-400 text-sm"
@@ -26,11 +28,14 @@ export const RecentTasks = ({ taskData }: { taskData: TaskType[] }) => {
           View All
         </Link>
       </div>
-      <div className="w-full p-3 space-y-3 ">
-        {sortedTasks.map((task) => (
-          <div key={task.id} className="flex items-center justify-between">
-            <div>
-              <p className="font-medium ">{task.task_name}</p>
+      <div className="w-full space-y-2 overflow-y-auto p-3">
+        {sortedTasks.slice(0, 5).map((task) => (
+          <div
+            key={task.id}
+            className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-mist-200 p-3 dark:border-mist-800"
+          >
+            <div className="min-w-0">
+              <p className="truncate font-medium">{task.task_name}</p>
               <p className="text-sm dark:text-gray-400 text-gray-600">
                 {task.project_name}
               </p>

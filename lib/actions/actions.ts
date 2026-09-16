@@ -4,11 +4,12 @@ import { project, task } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
-import { eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
+import { cache } from "react";
 
 import { headers } from "next/headers";
 
-export const getUser = async () => {
+export const getUser = cache(async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -16,7 +17,7 @@ export const getUser = async () => {
     return null;
   }
   return session.user;
-};
+});
 
 export const createProject = async (
   project_name: string,
@@ -40,6 +41,32 @@ export const createProject = async (
   revalidatePath("/dashboard/projects");
   return;
 };
+
+export const updateProject = async (
+  id: number,
+  project_name: string,
+  project_type: string,
+  priority: string,
+  deadline: Date,
+  description: string,
+) => {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+
+  await db
+    .update(project)
+    .set({ project_name, project_type, priority, deadline, description })
+    .where(and(eq(project.id, id), eq(project.userId, user.id)));
+  await db
+    .update(task)
+    .set({ project_name })
+    .where(and(eq(task.project_id, id), eq(task.userId, user.id)));
+
+  revalidatePath("/dashboard/projects");
+  revalidatePath("/dashboard/tasks");
+};
 export const deleteProject = async (id: number) => {
   const user = await getUser();
   if (!user) {
@@ -60,6 +87,30 @@ export const getProjectData = async () => {
     .from(project)
     .where(eq(project.userId, user.id));
   return projects;
+};
+
+export const getProjectProgress = async () => {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+
+  const progress = await db
+    .select({
+      projectId: task.project_id,
+      total: count(task.id),
+      completed: sql<number>`count(*) filter (where ${task.task_status} = 'Done')`,
+    })
+    .from(task)
+    .where(eq(task.userId, user.id))
+    .groupBy(task.project_id);
+
+  return Object.fromEntries(
+    progress.map(({ projectId, total, completed }) => [
+      projectId,
+      { total, completed },
+    ]),
+  );
 };
 export const createTask = async (
   task_name: string,
@@ -85,6 +136,37 @@ export const createTask = async (
     project_name: project_name,
   });
   return;
+};
+
+export const editTask = async (
+  id: number,
+  task_name: string,
+  priority: string,
+  deadline: Date,
+  task_status: string,
+  description: string,
+  project_id: number,
+  project_name: string,
+) => {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+
+  await db
+    .update(task)
+    .set({
+      task_name,
+      priority,
+      deadline,
+      task_status,
+      description,
+      project_id,
+      project_name,
+    })
+    .where(and(eq(task.id, id), eq(task.userId, user.id)));
+
+  revalidatePath("/dashboard/tasks");
 };
 export const deleteTask = async (id: number) => {
   const user = await getUser();

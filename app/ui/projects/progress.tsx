@@ -1,22 +1,11 @@
-import { TaskType } from "@/lib/types/types";
 import { FC } from "react";
 
 type Prop = {
-  taskData: TaskType[] | undefined;
-  projectName: string;
+  progress?: { total: number; completed: number };
 };
-export const Progress: FC<Prop> = ({ taskData, projectName }) => {
-  const totalTasks = taskData?.filter(
-    (task) => task.project_name === projectName,
-  );
-  const total = totalTasks?.length == 0 ? 1 : totalTasks?.length;
-  const count = totalTasks?.filter(
-    (task) => task.task_status === "Done",
-  ).length;
-  let percent;
-  if (count != undefined && total != undefined) {
-    percent = Math.round((count / total) * 100);
-  }
+export const Progress: FC<Prop> = ({ progress }) => {
+  const total = progress?.total || 1;
+  const percent = Math.round(((progress?.completed || 0) / total) * 100);
 
   const widthPercent = percent === 0 ? `${percent + 10}%` : `${percent}%`;
 
