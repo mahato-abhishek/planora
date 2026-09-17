@@ -18,7 +18,7 @@ const links = [
   },
   { name: "Tasks", href: "/dashboard/tasks", icon: <FaTasks height="24" /> },
   {
-    name: "Schedule",
+    name: "Calendar",
     href: "/dashboard/schedule",
     icon: <RiCalendarTodoFill height="24" />,
   },

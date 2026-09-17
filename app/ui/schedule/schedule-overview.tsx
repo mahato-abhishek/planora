@@ -114,11 +114,6 @@ const CalendarView: FC<Props> = ({ taskData, projectData }) => {
   return (
     <div className={`${geistSans.className} min-w-0 pb-8`}>
       <header className="border-b border-mist-300 px-4 py-5 dark:border-mist-800 sm:px-6 sm:py-6">
-        <p
-          className={`${spaceMono.className} text-xs uppercase tracking-wide text-mist-500`}
-        >
-          Workspace / Schedule
-        </p>
         <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">

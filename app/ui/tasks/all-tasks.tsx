@@ -1,6 +1,6 @@
-import { MdDelete, MdEdit, MdCheckCircle } from "react-icons/md";
+import { MdCheckCircle } from "react-icons/md";
 import { TbCircleDashed, TbAlertCircleFilled } from "react-icons/tb";
-import { RiProgress2Line } from "react-icons/ri";
+import { RiProgress2Line, RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 
 import {
   FcHighPriority,
@@ -124,18 +124,18 @@ export const AllTasks = ({
           type="button"
           aria-label={`Delete ${taskName}`}
           onClick={handleDelete}
-          className="rounded border border-mist-300 p-1.5 dark:border-mist-700"
+          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30"
         >
-          <MdDelete size="17" fill="red" />
+          <RiDeleteBinLine size="16" />
         </button>
 
         <button
           type="button"
           onClick={editTask}
           aria-label={`Edit ${taskName}`}
-          className="border-2 rounded border-mist-300 dark:border-mist-700 p-1"
+          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
         >
-          <MdEdit size="18" />
+          <RiEditLine size="16" />
         </button>
       </div>
     </div>

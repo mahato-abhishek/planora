@@ -8,7 +8,7 @@ export default async function Layout({
 }) {
   return (
     <>
-      <Header name="Schedule" icon={<RiCalendar2Fill />} />
+      <Header name="Calendar" icon={<RiCalendar2Fill />} />
       <div className="grow p-2 ">{children}</div>
     </>
   );

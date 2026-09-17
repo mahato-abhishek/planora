@@ -1,5 +1,4 @@
-import { FaRegEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { Progress } from "./progress";
 
 export const AllProjects = ({
@@ -57,17 +56,18 @@ export const AllProjects = ({
       <div className="mt-auto flex items-center justify-between border-t border-mist-200 pt-3 dark:border-mist-800">
         <button
           onClick={handleDelete}
-          className="px-2 py-1 border rounded-full border-mist-300 dark:border-mist-700 cursor-pointer"
+          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30"
         >
-          <MdDelete fill="red" size="20" />
+          <RiDeleteBinLine fill="red" size="16" />
         </button>
+
         <button
           type="button"
           onClick={editItem}
           aria-label={`Edit ${projectName}`}
-          className="px-2 py-1 border rounded-full border-mist-300 dark:border-mist-700 "
+          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
         >
-          <FaRegEdit size="18" />
+          <RiEditLine size="16" />
         </button>
       </div>
     </article>

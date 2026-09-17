@@ -50,9 +50,9 @@ export const Account = ({
         </span>
         <span className="shrink-0 text-mist-500">
           {profileOpen ? (
-            <RiArrowUpSLine size="18" />
-          ) : (
             <RiArrowDownSLine size="18" />
+          ) : (
+            <RiArrowUpSLine size="18" />
           )}
         </span>
       </button>

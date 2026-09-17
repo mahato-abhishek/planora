@@ -26,7 +26,7 @@ export const ThemeToggle = () => {
       onClick={toggleTheme}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       title={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="flex size-9 items-center justify-center rounded-lg border border-mist-200 bg-mist-100 text-mist-700 hover:bg-mist-200 dark:border-mist-700 dark:bg-mist-800 dark:text-mist-200 dark:hover:bg-mist-700"
+      className="flex size-8 items-center justify-center rounded-lg border border-mist-200 bg-mist-100 text-mist-700 hover:bg-mist-200 dark:border-mist-700 dark:bg-mist-800 dark:text-mist-200 dark:hover:bg-mist-700"
     >
       {dark ? <RiSunLine size="18" /> : <RiMoonLine size="18" />}
     </button>

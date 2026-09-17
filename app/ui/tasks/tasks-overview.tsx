@@ -52,11 +52,6 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
       <header className="border-b border-mist-300 px-4 py-5 dark:border-mist-800 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p
-              className={`${spaceMono.className} text-xs uppercase tracking-wide text-mist-500`}
-            >
-              Workspace / Tasks
-            </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Keep work moving
             </h1>

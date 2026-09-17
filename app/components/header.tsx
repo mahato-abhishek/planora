@@ -8,7 +8,7 @@ import { BiCommand } from "react-icons/bi";
 import { ThemeToggle } from "./theme-toggle";
 
 type Props = {
-  name: "Dashboard" | "Tasks" | "Schedule" | "Projects" | "Activity";
+  name: "Dashboard" | "Tasks" | "Calendar" | "Projects" | "Activity";
   icon: React.ReactElement;
 };
 
@@ -41,7 +41,7 @@ const Header = (prop: Props) => {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Search projects and tasks"
-            className="flex items-center justify-center gap-2 rounded-lg border border-mist-200 bg-mist-100 p-2 dark:border-mist-700 dark:bg-mist-800 sm:pl-2"
+            className="flex items-center justify-center gap-2 rounded-lg border border-mist-200 bg-mist-100 p-1 dark:border-mist-700 dark:bg-mist-800 sm:pl-2"
           >
             <BiSearch height="24" />
             <p className="hidden px-2 text-xs sm:block">Search...</p>

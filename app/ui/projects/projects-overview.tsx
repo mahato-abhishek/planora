@@ -35,9 +35,6 @@ const ProjectView: FC<Props> = ({ projectData, projectProgress }) => {
       <header className="border-b border-mist-300 px-4 py-5 dark:border-mist-800 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="flex items-center gap-2 text-xs uppercase tracking-wide text-mist-500">
-              <RiFolderLine size="15" /> Workspace / Projects
-            </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Your projects
             </h1>
