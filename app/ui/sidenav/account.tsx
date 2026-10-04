@@ -37,7 +37,7 @@ export const Account = ({
         type="button"
         aria-expanded={profileOpen}
         onClick={() => setProfileOpen((open) => !open)}
-        className="flex w-full items-center gap-3 rounded-lg p-2 text-left hover:bg-mist-300 dark:hover:bg-mist-700"
+        className="flex w-full items-center gap-3 rounded-lg p-2 text-left hover:bg-mist-300 dark:hover:bg-mist-700 cursor-pointer "
       >
         <Profile />
         <span className="min-w-0 flex-1">

@@ -66,7 +66,7 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
               setEditingTask(undefined);
               setTaskOpen(true);
             }}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-mist-950 px-4 py-2.5 text-sm text-white hover:bg-mist-800 dark:bg-mist-50 dark:text-black dark:hover:bg-mist-200 sm:w-fit"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-mist-950 px-4 py-2.5 text-sm text-white hover:bg-mist-800 dark:bg-mist-50 dark:text-black dark:hover:bg-mist-200 sm:w-fit cursor-pointer"
           >
             <RiAddLine size="18" />
             New task
@@ -80,7 +80,7 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
             <button
               type="button"
               key={category}
-              className={`whitespace-nowrap rounded-lg border px-3 py-1.5 text-xs transition-colors sm:text-sm ${active === category ? "border-mist-950 bg-mist-950 text-white dark:border-mist-50 dark:bg-mist-50 dark:text-black" : "border-transparent text-mist-600 hover:border-mist-300 hover:bg-mist-200 dark:text-mist-400 dark:hover:border-mist-700 dark:hover:bg-mist-800"}`}
+              className={`whitespace-nowrap rounded-lg border px-3 py-1.5 text-xs transition-colors sm:text-sm cursor-pointer ${active === category ? "border-mist-950 bg-mist-950 text-white dark:border-mist-50 dark:bg-mist-50 dark:text-black" : "border-transparent text-mist-600 hover:border-mist-300 hover:bg-mist-200 dark:text-mist-400 dark:hover:border-mist-700 dark:hover:bg-mist-800"}`}
               onClick={() => setActive(category)}
             >
               {category}
@@ -98,7 +98,7 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
             aria-label="List view"
             aria-pressed={viewMode === "list"}
             onClick={() => setViewMode("list")}
-            className={`flex flex-1 items-center justify-center gap-1 rounded px-3 py-1.5 text-xs sm:flex-none sm:text-sm ${viewMode === "list" ? "bg-mist-200 dark:bg-mist-800" : ""}`}
+            className={`flex flex-1 items-center justify-center gap-1 rounded px-3 py-1.5 text-xs sm:flex-none sm:text-sm cursor-pointer ${viewMode === "list" ? "bg-mist-200 dark:bg-mist-800" : ""}`}
           >
             <BsListUl size="16" /> List
           </button>
@@ -107,7 +107,7 @@ const TaskView: FC<Props> = ({ taskData, projectData }) => {
             aria-label="Kanban view"
             aria-pressed={viewMode === "kanban"}
             onClick={() => setViewMode("kanban")}
-            className={`flex flex-1 items-center justify-center gap-1 rounded px-3 py-1.5 text-xs sm:flex-none sm:text-sm ${viewMode === "kanban" ? "bg-mist-200 dark:bg-mist-800" : ""}`}
+            className={`flex flex-1 items-center justify-center gap-1 rounded px-3 py-1.5 text-xs sm:flex-none sm:text-sm cursor-pointer ${viewMode === "kanban" ? "bg-mist-200 dark:bg-mist-800" : ""}`}
           >
             <BsKanban size="16" /> Board
           </button>

@@ -48,7 +48,7 @@ const ProjectView: FC<Props> = ({ projectData, projectProgress }) => {
               setEditingProject(undefined);
               setProjectOpen(true);
             }}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-mist-950 px-4 py-2.5 text-sm text-white hover:bg-mist-800 dark:bg-mist-50 dark:text-black sm:w-fit"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-mist-950 px-4 py-2.5 text-sm text-white hover:bg-mist-800 dark:hover:bg-mist-200 dark:bg-mist-50 dark:text-black sm:w-fit cursor-pointer"
           >
             <RiAddLine size="18" /> New project
           </button>
@@ -60,7 +60,7 @@ const ProjectView: FC<Props> = ({ projectData, projectProgress }) => {
             <button
               type="button"
               key={category}
-              className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs sm:text-sm ${active === category ? "bg-mist-950 text-white dark:bg-mist-50 dark:text-black" : "text-mist-600 hover:bg-mist-200 dark:text-mist-400 dark:hover:bg-mist-800"}`}
+              className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs sm:text-sm cursor-pointer ${active === category ? "bg-mist-950 text-white dark:bg-mist-50 dark:text-black" : "text-mist-600 hover:bg-mist-200 dark:text-mist-400 dark:hover:bg-mist-800"}`}
               onClick={() => setActive(category)}
             >
               {category}
@@ -100,14 +100,14 @@ const ProjectView: FC<Props> = ({ projectData, projectProgress }) => {
             (project) =>
               active === "All Projects" || project.priority === active,
           ).length === 0 && (
-            <div className="col-span-full rounded-xl border border-dashed border-mist-300 px-4 py-16 text-center dark:border-mist-700">
-              <RiFolderLine className="mx-auto text-mist-400" size="28" />
-              <p className="mt-2 font-medium">No projects in this view</p>
-              <p className="mt-1 text-sm text-mist-500">
-                Create a project or choose another priority.
-              </p>
-            </div>
-          )}
+              <div className="col-span-full rounded-xl border border-dashed border-mist-300 px-4 py-16 text-center dark:border-mist-700">
+                <RiFolderLine className="mx-auto text-mist-400" size="28" />
+                <p className="mt-2 font-medium">No projects in this view</p>
+                <p className="mt-1 text-sm text-mist-500">
+                  Create a project or choose another priority.
+                </p>
+              </div>
+            )}
         </div>
       </div>
       {projectOpen && (

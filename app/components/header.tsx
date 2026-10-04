@@ -41,7 +41,7 @@ const Header = (prop: Props) => {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Search projects and tasks"
-            className="flex items-center justify-center gap-2 rounded-lg border border-mist-200 bg-mist-100 p-1 dark:border-mist-700 dark:bg-mist-800 sm:pl-2"
+            className="flex items-center justify-center gap-2 rounded-lg border border-mist-200 bg-mist-100 p-1 dark:border-mist-700 dark:bg-mist-800 sm:pl-2 cursor-pointer "
           >
             <BiSearch height="24" />
             <p className="hidden px-2 text-xs sm:block">Search...</p>

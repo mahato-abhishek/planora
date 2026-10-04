@@ -126,7 +126,7 @@ const CalendarView: FC<Props> = ({ taskData, projectData }) => {
           <button
             type="button"
             onClick={goToToday}
-            className="w-full rounded-lg border border-mist-300 px-3 py-2 text-sm hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 sm:w-auto"
+            className="w-full rounded-lg border border-mist-300 px-3 py-2 text-sm hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 sm:w-auto cursor-pointer"
           >
             Today
           </button>
@@ -140,7 +140,7 @@ const CalendarView: FC<Props> = ({ taskData, projectData }) => {
               type="button"
               aria-label="Previous month"
               onClick={() => moveMonth(-1)}
-              className="rounded-lg border border-mist-300 p-2 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
+              className="rounded-lg border border-mist-300 p-2 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 cursor-pointer"
             >
               <RiArrowLeftSLine size="18" />
             </button>
@@ -152,7 +152,7 @@ const CalendarView: FC<Props> = ({ taskData, projectData }) => {
               type="button"
               aria-label="Next month"
               onClick={() => moveMonth(1)}
-              className="rounded-lg border border-mist-300 p-2 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
+              className="rounded-lg border border-mist-300 p-2 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 cursor-pointer"
             >
               <RiArrowRightSLine size="18" />
             </button>

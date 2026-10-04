@@ -56,7 +56,7 @@ export const AllProjects = ({
       <div className="mt-auto flex items-center justify-between border-t border-mist-200 pt-3 dark:border-mist-800">
         <button
           onClick={handleDelete}
-          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30"
+          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30 cursor-pointer"
         >
           <RiDeleteBinLine fill="red" size="16" />
         </button>
@@ -65,7 +65,7 @@ export const AllProjects = ({
           type="button"
           onClick={editItem}
           aria-label={`Edit ${projectName}`}
-          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
+          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 cursor-pointer"
         >
           <RiEditLine size="16" />
         </button>

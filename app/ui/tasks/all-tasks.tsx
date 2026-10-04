@@ -52,7 +52,7 @@ export const AllTasks = ({
 
   return (
     <div
-      className={`${geistSans.className} grid min-h-16 grid-cols-17 w-full items-center gap-2 border-b border-mist-200 bg-mist-50 px-4 py-2 text-sm transition-colors hover:bg-white dark:border-mist-800 dark:bg-mist-950 dark:hover:bg-mist-900`}
+      className={`${geistSans.className} grid min-h-16 grid-cols-17 w-full items-center gap-2 border-b border-mist-200 bg-mist-50 px-4 py-2 text-sm transition-colors  dark:border-mist-800 dark:bg-mist-950 `}
     >
       <p className="col-span-3 min-w-0 truncate border-r border-mist-200 py-2 pr-2 font-semibold dark:border-mist-800">
         {taskName}
@@ -73,7 +73,7 @@ export const AllTasks = ({
         <button
           type="button"
           onClick={() => setActiveStatus((prev) => !prev)}
-          className="flex max-w-full items-center gap-1 rounded-md border border-mist-300 px-2 py-1 text-xs dark:border-mist-700"
+          className="flex max-w-full items-center gap-1 rounded-md border border-mist-300 px-2 py-1 text-xs dark:border-mist-700 cursor-pointer hover:bg-mist-200 dark:hover:bg-mist-800"
         >
           {status === "To Do" ? (
             <TbCircleDashed size="16" fill="grey" />
@@ -124,7 +124,7 @@ export const AllTasks = ({
           type="button"
           aria-label={`Delete ${taskName}`}
           onClick={handleDelete}
-          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30"
+          className="rounded-lg border border-mist-300 p-1.5 text-red-600 hover:bg-red-50 dark:border-mist-700 dark:hover:bg-red-950/30 cursor-pointer"
         >
           <RiDeleteBinLine size="16" />
         </button>
@@ -133,7 +133,7 @@ export const AllTasks = ({
           type="button"
           onClick={editTask}
           aria-label={`Edit ${taskName}`}
-          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800"
+          className="rounded-lg border border-mist-300 p-1.5 hover:bg-mist-200 dark:border-mist-700 dark:hover:bg-mist-800 cursor-pointer"
         >
           <RiEditLine size="16" />
         </button>

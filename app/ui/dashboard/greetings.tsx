@@ -1,4 +1,4 @@
-export const Greetings = ({ name }: { name: string }) => {
+export const Greetings = ({ name }: { name: string | undefined }) => {
   return (
     <div>
       <p className="text-2xl font-semibold">Hi, {name} </p>
