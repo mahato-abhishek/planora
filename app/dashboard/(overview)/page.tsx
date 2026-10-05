@@ -9,9 +9,10 @@ import RecentProjects from "@/app/ui/dashboard/recent-projects";
 import { RecentTasks } from "@/app/ui/dashboard/recent-tasks";
 import Link from "next/link";
 import { RiArrowRightLine } from "react-icons/ri";
-const user = await getUser();
+
 
 const Dashboard = async () => {
+  const user = await getUser();
   const [projectData, taskData] = await Promise.all([
     getProjectData(),
     getTaskData(),
